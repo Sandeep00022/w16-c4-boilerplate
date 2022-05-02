@@ -1,10 +1,25 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { getProductsData } from "../Redux/actions";
+import { ProductCard } from "./ProductCard";
 import { Select } from "./Styled";
 
+
+const Grid =styled.div`
+   display:grid,
+
+`
+
 export const Products = () => {
+
+  const {data}=useSelector((state)=>state.data)
+
+  const dispatch=useDispatch();
   useEffect(() => {
     // fetch ProductsData using redux-thunk on every mount
-  }, []);
+     dispatch(getProductsData())
+  }, [dispatch]);
   const handleSort = (e) => {
     // dispatch sort products on change
   };
@@ -17,8 +32,15 @@ export const Products = () => {
         <option value="desc">High to Low</option>
       </Select>
       <Grid data-testid="products-container">
-        {/* iterate data and show each POroduct card */}
+          {
+             data.map((item)=>(
+               <ProductCard key={item.id} item={item}/>
+             ))
+          }
+              
+              
       </Grid>
+      
     </>
   );
 };
